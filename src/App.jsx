@@ -171,13 +171,15 @@ const css = `
 function formatRut(raw){
   const c=raw.replace(/[^0-9kK]/g,"").toUpperCase();
   if(c.length<2)return c;
-  return c.slice(0,-1).replace(/\B(?=(\d{3})+(?!\d))/g,".")+"-"+c.slice(-1);
+  return c.slice(0,-1)+"-"+c.slice(-1);
 }
 function validateRut(rut){
-  const c=rut.replace(/[.\-]/g,"").toUpperCase();
+  const c=rut.replace(/[\-]/g,"").toUpperCase();
   if(c.length<2)return false;
   const dv=c.slice(-1),num=parseInt(c.slice(0,-1),10);
   if(isNaN(num))return false;
+  const digits=String(num).length;
+  if(digits<7||digits>8)return false;
   let s=0,m=2;
   for(let i=String(num).length-1;i>=0;i--){s+=parseInt(String(num)[i])*m;m=m<7?m+1:2}
   const e=11-(s%11),d=e===11?"0":e===10?"K":String(e);
@@ -230,18 +232,16 @@ function AgroHeader({ imgSrc = null }) {
 // ── PANTALLA 1: REGISTRO ───────────────────────────────────────────────────
 function ScreenRegistro({ onNext }) {
   const [rut,setRut]=useState(""),
-        [nombre,setNombre]=useState(""),
         [sucursal,setSucursal]=useState(""),
         [turno,setTurno]=useState(""),
         [error,setError]=useState("");
 
-  const handleRut=e=>{const f=formatRut(e.target.value);if(f.length<=12)setRut(f)};
+  const handleRut=e=>{const f=formatRut(e.target.value);if(f.length<=10)setRut(f)};
   const submit=()=>{
-    if(!nombre.trim())return setError("Ingresa tu nombre completo.");
-    if(!validateRut(rut))return setError("RUT inválido. Ejemplo correcto: 12.345.678-9");
+    if(!validateRut(rut))return setError("RUT inválido. Debe tener 7 u 8 dígitos seguidos de un guión y dígito verificador. Ej: 12345678-9");
     if(!sucursal)return setError("Selecciona tu sucursal.");
     if(!turno)return setError("Selecciona el turno actual.");
-    setError("");onNext({rut,nombre:nombre.trim(),sucursal,turno});
+    setError("");onNext({rut,sucursal,turno});
   };
 
   return(
@@ -251,15 +251,11 @@ function ScreenRegistro({ onNext }) {
       <div className="card">
         <div className="step-badge">📋 Paso 1 de 3 — Identificación</div>
         <div className="title">Registro del<br/>Operador</div>
-        <div className="subtitle">Completa tus datos para iniciar la evaluación.</div>
+        <div className="subtitle">Ingresa tu RUT para iniciar la evaluación.</div>
         {error&&<div className="error-msg">⚠ {error}</div>}
         <div className="input-group">
-          <label className="input-label">Nombre Completo</label>
-          <input className="input-field" placeholder="Ej: Juan Pérez González" value={nombre} onChange={e=>setNombre(e.target.value)}/>
-        </div>
-        <div className="input-group">
           <label className="input-label">RUT</label>
-          <input className="input-field" placeholder="12.345.678-9" value={rut} onChange={handleRut} inputMode="numeric"/>
+          <input className="input-field" placeholder="12345678-9" value={rut} onChange={handleRut} inputMode="numeric"/>
         </div>
         <div className="input-group">
           <label className="input-label">Sucursal</label>
@@ -299,7 +295,7 @@ function ScreenInstrucciones({ operador, onStart }) {
       <div className="card">
         <div className="step-badge">📖 Paso 2 de 3 — Instrucciones</div>
         <div className="title">Test de<br/>Vigilancia PVT</div>
-        <div className="subtitle">Hola <strong style={{color:G.accent}}>{operador.nombre.split(" ")[0]}</strong>, lee con atención antes de comenzar.</div>
+        <div className="subtitle">Operador <strong style={{color:G.accent}}>{operador.rut}</strong>, lee con atención antes de comenzar.</div>
         {instrs.map((t,i)=>(
           <div className="instr-item" key={i}>
             <div className="instr-num">{i+1}</div>
@@ -408,7 +404,7 @@ function ScreenResultados({ operador, times, onReset }) {
       <div className="card">
         <div className="step-badge">📊 Resultado — {ts}</div>
         <div style={{textAlign:"center",marginBottom:4}}>
-          <div style={{fontSize:13,color:G.textMuted,marginBottom:3}}>{operador.nombre} · {operador.rut}</div>
+          <div style={{fontSize:13,color:G.textMuted,marginBottom:3}}>RUT: {operador.rut}</div>
           <div style={{fontSize:12,color:G.textMuted}}>Sucursal {operador.sucursal} · {operador.turno}</div>
         </div>
 
