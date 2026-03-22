@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/test-fatiga-agrosuper/sw.js', { scope: '/test-fatiga-agrosuper/' })})}
