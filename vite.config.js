@@ -19,6 +19,7 @@ export default defineConfig({
         start_url: '/test-fatiga-agrosuper/',
         orientation: 'portrait',
         lang: 'es',
+        target_api_level: 34,
         categories: ['health', 'productivity'],
         icons: [
           {
