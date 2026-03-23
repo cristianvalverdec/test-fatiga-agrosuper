@@ -1,10 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>test-fatiga-agrosuper</title>
+
+    <!-- Seguridad -->
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+
+    <!-- PWA Core -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1B2B3A" />
+    <link rel="icon" type="image/png" href="/test-fatiga-agrosuper/icons/favicon-32x32.png" />
+
+    <!-- Apple PWA (iOS) -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Fatiga Agrosuper" />
+    <link rel="apple-touch-icon" href="/test-fatiga-agrosuper/icons/apple-touch-icon.png" />
+
+    <!-- Metadatos de la app -->
+    <meta name="application-name" content="Test de Fatiga Agrosuper" />
+    <meta name="description" content="Evaluación de Vigilancia Psicomotora para trabajadores de Agrosuper" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <title>Test de Fatiga Agrosuper</title>
   </head>
   <body>
     <div id="root"></div>
